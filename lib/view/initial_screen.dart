@@ -86,9 +86,11 @@ class InitialScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async {
                           await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (contextNew) => const StayList()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (contextNew) => StayList(),
+                            ),
+                          );
                         },
                         child: const Text(
                           'Listagem de Estadias',

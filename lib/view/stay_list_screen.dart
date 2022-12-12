@@ -1,32 +1,71 @@
-import 'package:desafio_lince_tech_academy/view/vehicle_registration_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/provider.dart';
+import 'vehicle_registration_screen.dart';
 
 class StayList extends StatelessWidget {
 
-  ///
-  const StayList({Key? key})
-      : super(key: key);
-
-  Date() {
-    var format = DateFormat('yyyy-MM-dd HH:mm:ss');
-    var entryDate = format.format(DateTime.now());
-
-    return entryDate.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        Container(
-            height: 32,
-            width: 52,
-            child: IconButton(onPressed: () {Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (contextNew) => FormRegistration()));}, icon: Icon(Icons.add))),
-      ]),
+    return Consumer<VacanciesState>(
+      builder: (context, state, child) {
+        return Material(
+          child: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (contextNew) => FormRegistration(),
+                  ),
+                );
+              },
+              child: Icon(Icons.add)
+            ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.cars.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          child: Row(
+                            children: [Container(
+                              width: 32,
+                              height: 52,
+                              color: Color.fromRGBO(186, 225, 227, 0.89),
+                              child:
+                                ElevatedButton(
+                                  onLongPress:
+                                    color: Color.red,
+                                  , child: Icon(
+                                  Icons.photo,
+                                ),
+                                )
+                            ),
+                              Text(
+                                '${state.cars[index].driverName}'
+                                    ' ${state.cars[index].licensePlate}'
+                                    ' ${state.cars[index].entryFormat}',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

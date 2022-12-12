@@ -54,11 +54,12 @@ class VacanciesNumberScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IconButton(
+                  ElevatedButton(
                       onPressed: () {
                         VacanciesState(int.parse(_vacanciesController.text));
                       },
-                      icon: const Icon(Icons.save_sharp)),
+                      child: Text('Salvar'),
+                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 70),
                     child: Text(
@@ -67,7 +68,7 @@ class VacanciesNumberScreen extends StatelessWidget {
                           color: Colors.black12,
                           fontSize: 18,
                           leadingDistribution:
-                              TextLeadingDistribution.proportional),
+                          TextLeadingDistribution.proportional),
                     ),
                   ),
                   Padding(
@@ -78,7 +79,7 @@ class VacanciesNumberScreen extends StatelessWidget {
                           color: Colors.black12,
                           fontSize: 18,
                           leadingDistribution:
-                              TextLeadingDistribution.proportional),
+                          TextLeadingDistribution.proportional),
                     ),
                   )
                 ],

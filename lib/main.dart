@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'controller/provider.dart';
 import 'view/initial_screen.dart';
 
 void main() {
@@ -13,12 +15,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (context) => VacanciesState(5),
+      child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primaryColorLight: const Color.fromRGBO(207, 253, 242, 0.9),
-    ),
-    home: const InitialScreen(),
+        ),
+        home: const InitialScreen(),
+      ),
     );
   }
 }

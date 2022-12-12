@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:desafio_lince_tech_academy/view/stay_list_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/provider.dart';
+import '../model/car.dart';
+import 'initial_screen.dart';
 
 /// Form registration
-abstract class FormRegistration extends StatelessWidget {
+class FormRegistration extends StatelessWidget {
   FormRegistration({Key? key}) : super(key: key);
 
-  TextEditingController _vacanciesController = TextEditingController();
-
-  ///
-  TextEditingController get vacanciesController => _vacanciesController;
-
-  set vacanciesController(TextEditingController vacanciesNumber) {
-    _vacanciesController = vacanciesNumber;
-  }
-
-  //final _formKey = GlobalKey<FormState>();
+  final cardBoard = TextEditingController();
+  TextEditingController _driversName = TextEditingController();
+  TextEditingController _licensePlate = TextEditingController();
 
   /// Valid if the field was filled
   bool valueValidator(String? value) {
@@ -25,8 +25,10 @@ abstract class FormRegistration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Scaffold(
+    return Consumer<VacanciesState>(
+      builder: (context, state, child) {
+        return Form(
+          child: Scaffold(
             appBar: AppBar(
               title: const Text('Cadastre um novo carro'),
             ),
@@ -35,8 +37,76 @@ abstract class FormRegistration extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      child: TextFormField(
+                        controller: _driversName,
+                        decoration: const InputDecoration(
+                            hintText: 'Nome do motorista'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: TextFormField(
+                        controller: _licensePlate,
+                        decoration:
+                        const InputDecoration(hintText: 'Placa do carro'),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      child: Container(
+                        width: 152,
+                        height: 32,
+                        child: ElevatedButton(onPressed: (){
+                          state.imagePicker(cardBoard.text.toString());
+                        }, child:
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.camera_alt_outlined,
+                            ),
+                            Text(
+                              'Selecione uma foto da galeria'
+                            ),
+                          ],
+                        )
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final format = DateFormat('dd-mm-yyyy HH:mm');
+                          final entryDate = format.format(DateTime.now());
+                          await state.addItem(
+                            Car(
+                             licensePlate: _licensePlate.text,
+                              driverName: _driversName.text,
+                              entryFormat: entryDate.toString(),
+                              photo: cardBoard.toString(),
+                            ),
+                          );
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StayList(),
+                            ),
+                          );
+                        },
+                        child: Text('Cadastrar'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            )));
+            ),
+          ),
+        );
+      },
+    );
   }
 }
